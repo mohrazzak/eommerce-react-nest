@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+html {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+footer {
+  margin-top: auto;
+}
+
+main {
+  flex-grow: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #c9c9c9ee;
+  border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(116, 116, 116);
+  border-radius: 100vw;
+  transition: background-color 3s ease;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* swiper.js */
+
+.swiper-pagination-bullet-active {
+  width: 2rem;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.swiper-pagination-bullet {
+  background-color: #fff;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  color: #fff;
+}
+/* Hide on xs */
+@media (max-width: 575.98px) {
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    display: none;
+  }
+}

@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DB_URL")
+}
+
+model User {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  email       String   @unique
+  password    String
+  phoneNumber String?  @db.VarChar(50)
+  imageURL    String?
+  isActive    Boolean  @default(false)
+  isAdmin     Boolean  @default(false)
+  resetCode   String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Addresses     Address[]
+  CartItems     CartItem[]
+  WishlistItems WishlistItem[]
+  Orders        Order[]
+  Reviews        Review[]
+
+  @@index([email])
+}
+
+model Address {
+  id           Int      @id @default(autoincrement())
+  addressLine1 String
+  addressLine2 String?
+  phoneNumber  String
+  addressName  String
+  email        String
+  country      String
+  state        String
+  name         String
+  postalCode   String
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId String  @db.Uuid
+  User   User    @relation(fields: [userId], references: [id])
+  Orders  Order[]
+}
+
+model Product {
+  id             Int              @id @default(autoincrement())
+  name           String
+  description    String
+  SKU            String           @unique
+  quantity       Int
+  price          Float
+  imageURL       String
+  Tags           Tag[]
+  Product_Images Product_Images[]
+  categoryId     Int
+  Category       Category         @relation(fields: [categoryId], references: [id])
+
+  CartItems      CartItem[]
+  WishlistItems  WishlistItem[]
+  OrderItems     OrderItem[]
+  Reviews        Review[]
+  Coupons       Coupon[]       @relation("CouponProduct")
+  averageRating Float          @default(0)
+  couponId      Int?
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  Products Product[]
+}
+
+model Product_Images {
+  id        Int     @id @default(autoincrement())
+  iamgeURL  String
+  productId Int
+  Product   Product @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  copounId Int?
+  Coupons  Coupon[]  @relation("CouponCategory")
+  Products  Product[]
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  userId    String  @db.Uuid
+  productId Int
+  quantity  Int
+  User      User    @relation(fields: [userId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id])
+}
+
+model WishlistItem {
+  id        Int     @id @default(autoincrement())
+  userId    String  @db.Uuid
+  productId Int
+  quantity  Int
+  User      User    @relation(fields: [userId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id               Int            @id @default(autoincrement())
+  paymentMethod    PaymentMethod
+  addressId        Int
+  Address          Address        @relation(fields: [addressId], references: [id])
+  ShippingMethodId Int
+  shippingMethod   ShippingMethod @relation(fields: [ShippingMethodId], references: [id])
+  orderTotal       Float
+  orderStatus      OrderStatus
+  User             User           @relation(fields: [userId], references: [id])
+  userId           String         @db.Uuid
+  OrderItems        OrderItem[]
+  couponId         Int?
+  Coupon           Coupon?        @relation(fields: [couponId], references: [id])
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  Product   Product @relation(fields: [productId], references: [id])
+  orderId   Int
+  Order     Order   @relation(fields: [orderId], references: [id])
+  quantity  Int
+  price     Float
+  copounId  Int
+}
+
+model Coupon {
+  id          Int        @id @default(autoincrement())
+  code        String     @unique
+  name        String
+  description String
+  percentage  Float
+  type        CopounType
+  startDate   DateTime
+  endDate     DateTime
+
+  Products   Product[]  @relation("CouponProduct")
+  Categories Category[] @relation("CouponCategory")
+  Orders     Order[]
+
+  @@index([id, code])
+}
+
+model Review {
+  id        Int     @id @default(autoincrement())
+  userId    String  @db.Uuid
+  User      User    @relation(fields: [userId], references: [id])
+  productId Int
+  Product   Product @relation(fields: [productId], references: [id])
+  rating    Float
+  comment   String
+
+  @@unique([userId, productId])
+}
+
+enum CopounType {
+  PRODUCT
+  CATEGORY
+  ORDER
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH_ON_DELIVERY
+}
+
+model ShippingMethod {
+  id    Int                @id @default(autoincrement())
+  name  ShippingMethodName
+  price Float
+  Orders Order[]
+}
+
+enum ShippingMethodName {
+  STANDARD
+  NEXT_DAY
+  PICKUP
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "label": "Search",
+    "id": "SEARCH",
+    "url": "/account",
+    "type": "SEARCH"
+  },
+  {
+    "label": "Wishlist",
+    "id": "HEART",
+    "url": "/wishlist",
+    "type": "RIGHT_ICON",
+    "hasCount": true
+  },
+  {
+    "label": "Cart",
+    "id": "CART",
+    "url": "/cart",
+    "type": "RIGHT_ICON",
+    "hasCount": true
+  },
+  {
+    "label": "Home",
+    "id": "HOME",
+    "url": "/",
+    "type": "CENTER_LINK"
+  },
+  {
+    "label": "Shop",
+    "id": "BAG",
+    "url": "/shop",
+    "type": "CENTER_LINK"
+  },
+  {
+    "label": "About us",
+    "id": "QUESTION",
+    "url": "/about-us",
+    "type": "CENTER_LINK"
+  },
+  {
+    "label": "Account",
+    "id": "USER",
+    "url": "/account",
+    "type": "RIGHT_ICON"
+  }
+]

@@ -37,8 +37,10 @@ const AnimatedBox = motion(Box);
 
 const LinksWithIcon = ({
   setCartOpen,
+  setWishlistOpen,
 }: {
   setCartOpen: Dispatch<SetStateAction<boolean>>;
+  setWishlistOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [searchedProducts, setSearchedProducts] = useState<ISearchItem[]>([]);
   const navigate = useNavigate();
@@ -195,6 +197,7 @@ const LinksWithIcon = ({
       {linksWithIcon.map((linkWithIcon, i) => (
         <LinkWithIcon
           setCartOpen={setCartOpen}
+          setWishlistOpen={setWishlistOpen}
           linkWithIcon={linkWithIcon}
           key={i}
           handleClick={() => navigate(linkWithIcon.url)}

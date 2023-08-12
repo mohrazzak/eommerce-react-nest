@@ -11,12 +11,16 @@ import LinkWithIcon from './components/LinksWithIcon/LinkWithIcon';
 import LeftDrawer from './components/LeftDrawer';
 import CartDrawer from './components/CartDrawer';
 import AppBar from '@mui/material/AppBar';
-const userLink = HeaderData.find((headerData) => headerData.id === 'CART');
+import WishlistDrawer from './components/WishlistDrawer';
+const userLink = HeaderData.filter(
+  (headerData) => headerData.id === 'CART' || headerData.id === 'HEART'
+);
 
 const Header: React.FC = () => {
   const [stickHeader, setStickHeader] = useState(false);
   const matchUpSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
   const [cartOpen, setCartOpen] = useState<boolean>(false);
+  const [wishlistOpen, setWishlistOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,19 +70,39 @@ const Header: React.FC = () => {
             {matchUpSm ? (
               // The right icons on PC
               <>
-                <LinksWithIcon setCartOpen={setCartOpen} />
+                <LinksWithIcon
+                  setCartOpen={setCartOpen}
+                  setWishlistOpen={setWishlistOpen}
+                />
                 <CartDrawer cartOpen={cartOpen} setCartOpen={setCartOpen} />
+                <WishlistDrawer
+                  setWishlistOpen={setWishlistOpen}
+                  wishlistOpen={wishlistOpen}
+                />
               </>
             ) : (
               userLink && (
                 // The icon on right in the mobile
                 <>
-                  <LinkWithIcon
-                    linkWithIcon={userLink}
-                    handleClick={() => setCartOpen((state) => !state)}
-                    setCartOpen={setCartOpen}
-                  />
+                  <Box sx={{ '& > :first-of-type': { mr: 1 } }}>
+                    <LinkWithIcon
+                      linkWithIcon={userLink[0]}
+                      handleClick={() => setCartOpen((state) => !state)}
+                      setCartOpen={setCartOpen}
+                      setWishlistOpen={setWishlistOpen}
+                    />
+                    <LinkWithIcon
+                      linkWithIcon={userLink[1]}
+                      handleClick={() => setWishlistOpen((state) => !state)}
+                      setCartOpen={setCartOpen}
+                      setWishlistOpen={setWishlistOpen}
+                    />
+                  </Box>
                   <CartDrawer cartOpen={cartOpen} setCartOpen={setCartOpen} />
+                  <WishlistDrawer
+                    setWishlistOpen={setWishlistOpen}
+                    wishlistOpen={wishlistOpen}
+                  />
                 </>
               )
             )}

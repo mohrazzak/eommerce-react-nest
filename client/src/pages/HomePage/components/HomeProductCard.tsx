@@ -3,12 +3,29 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import useTheme from '@mui/material/styles/useTheme';
 import { alpha } from '@mui/material/styles';
-import { BsCartPlus, BsEye } from 'react-icons/bs';
+import {
+  BsBagHeart,
+  BsCartPlus,
+  BsCartPlusFill,
+  BsEye,
+  BsFillBagHeartFill,
+} from 'react-icons/bs';
 import { BiHeart } from 'react-icons/bi';
 import { useState } from 'react';
 import ProductDialog from './ProductDialog';
 import { ShopProduct } from './HomeProducts';
 import prodImg from '../../../assets/images/prod.webp';
+import {
+  selectCartItemsData,
+  useAddCartItemMutation,
+} from '../../../features/api/cartItemAPI';
+import { Badge, Checkbox } from '@mui/material';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useAppSelector } from '../../../features/store';
+import {
+  selectWishlistItemData,
+  useToggleWishlistItemMutation,
+} from '../../../features/api/wishlistAPI';
 export interface Props {
   product: ShopProduct;
 }
@@ -16,6 +33,27 @@ export interface Props {
 const HomeProductCard = ({ product }: Props) => {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [addToCart] = useAddCartItemMutation();
+  const [toggleWishlist] = useToggleWishlistItemMutation();
+
+  const cartItems = useAppSelector((state) => selectCartItemsData(state));
+
+  const cartItem = cartItems?.find((cI) => cI.productId === product.id);
+  const isAddedToCart = Boolean(cartItem);
+
+  const wishlistItems = useAppSelector((state) =>
+    selectWishlistItemData(state)
+  );
+
+  const wishlistItem = wishlistItems?.find((cI) => cI.productId === product.id);
+  const isWishlisted = Boolean(wishlistItem);
+  const handleAddToCart = () => {
+    // if (isAddedToCart) return  ;
+    addToCart({ quantity: 1, productId: product.id });
+  };
+  const handleToggleWishlist = () => {
+    toggleWishlist({ productId: product.id });
+  };
 
   return (
     <>
@@ -86,69 +124,48 @@ const HomeProductCard = ({ product }: Props) => {
             display: 'flex',
             justifyContent: 'flex-end',
             gap: 1,
-            '& > button': {
-              transition: 'background-color .3s',
-              position: 'relative',
-            },
-            '& > button:not(:first-of-type)::before': {
-              content: '""',
-              width: '1px',
-              height: '100%',
-              bgcolor: alpha(theme.palette.primary.main, 0.3),
-              position: 'absolute',
-              top: 0,
-              left: -7,
-            },
-            '& > button:hover': {
-              bgcolor: alpha(theme.palette.primary.main, 0.1),
-            },
-            '& > button:hover::after': {
-              opacity: 1,
-              transform: 'translate(-20px,45px)',
-            },
-            '& > button::after': {
-              opacity: 0,
-              borderRadius: '5px',
-              height: '30px',
-              backgroundColor: theme.palette.primary.main,
-              position: 'absolute',
-              transform: 'translate(0,45px)',
-              left: '50%',
-              fontSize: '1rem',
-              color: '#fff',
-              p: 1,
-              transition: 'opacity .3s, transform .3s',
-            },
           })}
         >
-          <IconButton
-            sx={{
-              '&::after': {
-                content: '"View"',
-              },
-            }}
-            onClick={() => setDialogOpen(true)}
-          >
-            <BsEye />
-          </IconButton>
-          <IconButton
-            sx={{
-              '&::after': {
-                content: '"Wishlist"',
-              },
-            }}
-          >
-            <BiHeart />
-          </IconButton>
-          <IconButton
-            sx={{
-              '&::after': {
-                content: '"Cart"',
-              },
-            }}
-          >
-            <BsCartPlus />
-          </IconButton>
+          <Box>
+            <IconButton onClick={() => setDialogOpen(true)}>
+              <BsEye />
+            </IconButton>
+          </Box>
+          <Box>
+            <Checkbox
+              icon={<BsBagHeart size={24} />}
+              checkedIcon={
+                <BsFillBagHeartFill
+                  color={theme.palette.secondary.dark}
+                  size={24}
+                />
+              }
+              onClick={handleToggleWishlist}
+              checked={isWishlisted}
+            />
+          </Box>
+
+          <Box>
+            <Badge
+              badgeContent={cartItem?.quantity}
+              color="secondary"
+              sx={{
+                '& .MuiBadge-badge': {
+                  right: -3,
+                  top: 13,
+                  border: `2px solid ${theme.palette.background.paper}`,
+                  padding: '0 4px',
+                },
+              }}
+            >
+              <Checkbox
+                icon={<BsCartPlus size={24} />}
+                checkedIcon={<BsCartPlusFill size={24} />}
+                checked={isAddedToCart || false}
+                onClick={handleAddToCart}
+              />
+            </Badge>
+          </Box>
         </Box>
       </Box>
       <ProductDialog

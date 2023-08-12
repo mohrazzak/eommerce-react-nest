@@ -6,6 +6,9 @@ import authSlice from './authSlice';
 import { userApi } from './api/user/userAPI';
 import { addressApi } from './api/user/addressAPI';
 import { shopApi } from './api/user/shopAPI';
+import { cartItemApi } from './api/cartItemAPI';
+import cartSlice from './cartSlice';
+import { wishlistItemApi } from './api/wishlistAPI';
 
 export const store: Store = configureStore({
   reducer: {
@@ -13,7 +16,10 @@ export const store: Store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [addressApi.reducerPath]: addressApi.reducer,
     [shopApi.reducerPath]: shopApi.reducer,
+    [cartItemApi.reducerPath]: cartItemApi.reducer,
+    [wishlistItemApi.reducerPath]: wishlistItemApi.reducer,
     auth: authSlice,
+    cart: cartSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -21,7 +27,9 @@ export const store: Store = configureStore({
       authApi.middleware,
       userApi.middleware,
       addressApi.middleware,
-      shopApi.middleware
+      shopApi.middleware,
+      cartItemApi.middleware,
+      wishlistItemApi.middleware
     ),
 });
 

@@ -2,9 +2,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { usersPath } from '../../../api/routes';
 import { authUser } from '../../authSlice';
 import { User } from '@prisma/client';
+import { CartItemProduct } from 'src/interfaces';
+import { createSelector } from '@reduxjs/toolkit';
+import { setCart } from '../../cartSlice';
+
+interface UserWithCart extends User {
+  CartItems: CartItemProduct[];
+}
 
 interface UserApiResponse {
-  data: { user: User };
+  data: { user: UserWithCart };
   message: string;
   statusCode: number;
 }
@@ -30,6 +37,7 @@ export const userApi = createApi({
         actions.dispatch(
           authUser({ name: fetchedData.name, imageURL: fetchedData.imageURL })
         );
+        actions.dispatch(setCart(fetchedData.CartItems));
       },
     }),
     updateUser: builder.mutation<UserApiResponse, FormData>({
@@ -62,3 +70,10 @@ export const {
   useUpdateUserPasswordMutation,
   useDeleteUserMutation,
 } = userApi;
+
+export const selectUsersResult = userApi.endpoints.getMyInfo.select();
+
+export const selectUserData = createSelector(
+  selectUsersResult,
+  (usersResult) => usersResult.data?.data.user
+);

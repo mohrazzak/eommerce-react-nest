@@ -18,13 +18,13 @@ model User {
   isAdmin     Boolean  @default(false)
   resetCode   String?  @unique
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now()) @updatedAt
 
   Addresses     Address[]
   CartItems     CartItem[]
   WishlistItems WishlistItem[]
   Orders        Order[]
-  Reviews        Review[]
+  Reviews       Review[]
 
   @@index([email])
 }
@@ -42,11 +42,11 @@ model Address {
   postalCode   String
   isDefault    Boolean  @default(false)
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  updatedAt    DateTime @default(now()) @updatedAt
 
   userId String  @db.Uuid
   User   User    @relation(fields: [userId], references: [id])
-  Orders  Order[]
+  Orders Order[]
 }
 
 model Product {
@@ -59,55 +59,66 @@ model Product {
   imageURL       String
   Tags           Tag[]
   Product_Images Product_Images[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
   categoryId     Int
   Category       Category         @relation(fields: [categoryId], references: [id])
 
-  CartItems      CartItem[]
-  WishlistItems  WishlistItem[]
-  OrderItems     OrderItem[]
-  Reviews        Review[]
+  CartItems     CartItem[]
+  WishlistItems WishlistItem[]
+  OrderItems    OrderItem[]
+  Reviews       Review[]
   Coupons       Coupon[]       @relation("CouponProduct")
   averageRating Float          @default(0)
   couponId      Int?
 }
 
 model Tag {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  Products Product[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  Products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 }
 
 model Product_Images {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   iamgeURL  String
   productId Int
-  Product   Product @relation(fields: [productId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String
-  copounId Int?
-  Coupons  Coupon[]  @relation("CouponCategory")
+  id        Int       @id @default(autoincrement())
+  name      String
+  copounId  Int?
+  Coupons   Coupon[]  @relation("CouponCategory")
   Products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 }
 
 model CartItem {
-  id        Int     @id @default(autoincrement())
-  userId    String  @db.Uuid
+  id        Int      @id @default(autoincrement())
+  userId    String   @db.Uuid
   productId Int
   quantity  Int
-  User      User    @relation(fields: [userId], references: [id])
-  Product   Product @relation(fields: [productId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model WishlistItem {
-  id        Int     @id @default(autoincrement())
-  userId    String  @db.Uuid
+  id        Int      @id @default(autoincrement())
+  userId    String   @db.Uuid
   productId Int
-  quantity  Int
-  User      User    @relation(fields: [userId], references: [id])
-  Product   Product @relation(fields: [productId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Order {
@@ -121,20 +132,24 @@ model Order {
   orderStatus      OrderStatus
   User             User           @relation(fields: [userId], references: [id])
   userId           String         @db.Uuid
-  OrderItems        OrderItem[]
+  OrderItems       OrderItem[]
   couponId         Int?
   Coupon           Coupon?        @relation(fields: [couponId], references: [id])
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @default(now()) @updatedAt
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   productId Int
-  Product   Product @relation(fields: [productId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
   orderId   Int
-  Order     Order   @relation(fields: [orderId], references: [id])
+  Order     Order    @relation(fields: [orderId], references: [id])
   quantity  Int
   price     Float
   copounId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Coupon {
@@ -150,18 +165,22 @@ model Coupon {
   Products   Product[]  @relation("CouponProduct")
   Categories Category[] @relation("CouponCategory")
   Orders     Order[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
 
   @@index([id, code])
 }
 
 model Review {
-  id        Int     @id @default(autoincrement())
-  userId    String  @db.Uuid
-  User      User    @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  userId    String   @db.Uuid
+  User      User     @relation(fields: [userId], references: [id])
   productId Int
-  Product   Product @relation(fields: [productId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
   rating    Float
   comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([userId, productId])
 }
@@ -186,10 +205,12 @@ enum PaymentMethod {
 }
 
 model ShippingMethod {
-  id    Int                @id @default(autoincrement())
-  name  ShippingMethodName
-  price Float
-  Orders Order[]
+  id        Int                @id @default(autoincrement())
+  name      ShippingMethodName
+  price     Float
+  Orders    Order[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now()) @updatedAt
 }
 
 enum ShippingMethodName {

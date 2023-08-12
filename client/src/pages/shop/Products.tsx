@@ -38,7 +38,7 @@ const Products = ({ products }: Props) => {
           sortedProducts.sort((a, b) => a.price - b.price);
           break;
         case OrderBy.AVERAGE_RATING:
-          sortedProducts.sort((a, b) => a.averageRating - b.averageRating);
+          sortedProducts.sort((a, b) => b.averageRating - a.averageRating);
           break;
         case OrderBy.A_Z_ORDER:
           sortedProducts.sort((a, b) => a.name.localeCompare(b.name));

@@ -21,7 +21,8 @@ import halfHomeSection2 from '../../assets/images/half-home-section-2.jpg';
 import JoinUsHome from './components/JoinUsHome';
 import { useAppSelector } from '../../features/store';
 import { ShopProduct } from 'src/interfaces';
-
+import { useGetWishlistItemsQuery } from '../../features/api/wishlistAPI';
+import { useGetCartItemsQuery } from '../../features/api/cartItemAPI';
 const products: ShopProduct[] = [
   {
     id: 1,
@@ -58,6 +59,13 @@ const products: ShopProduct[] = [
 const Home: React.FC = () => {
   const theme = useTheme();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
+  useGetCartItemsQuery(undefined, {
+    skip: !isAuth,
+  });
+  useGetWishlistItemsQuery(undefined, {
+    skip: !isAuth,
+  });
+
   return (
     <Box>
       <Box sx={{ pt: 4 }}>

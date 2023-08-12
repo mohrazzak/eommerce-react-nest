@@ -18,43 +18,38 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UnderlinedHeading from './components/UnderlinedHeading';
 import { BiCheckbox, BiCheckboxChecked, BiSearch, BiX } from 'react-icons/bi';
 import AccordionSection from './components/AccordionSection';
 import { AiOutlineStar } from 'react-icons/ai';
 import { FormikProvider, useFormik } from 'formik';
 import { Filter } from '.';
+import { Category } from '@prisma/client';
 import useDeepCompareEffect from '../../hooks/useDeepEffect';
-interface Category {
-  id: number;
-  name: string;
-}
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Sidebar = ({
   drawerOpen,
   handleCloseDrawer,
   MAX_PRICE,
+  categories,
   setFetchFilters,
 }: {
   drawerOpen: boolean;
   handleCloseDrawer: () => void;
   MAX_PRICE: number;
+  categories: Category[];
   setFetchFilters: (
     filters: { key: string; value: number[] | number | string | null }[]
   ) => void;
 }) => {
   const theme = useTheme();
+
   const [filters, setFilters] = useState<Filter[]>([
     { key: 'price', value: `from $0 to $${MAX_PRICE}` },
   ]);
-  const categories = [
-    { id: 1, name: 'test1' },
-    { id: 2, name: 'test2' },
-    { id: 3, name: 'test3' },
-    { id: 4, name: 'test3' },
-    { id: 5, name: 'test3' },
-  ];
+
   const [filteredCategories, setFilteredCategories] =
     useState<Category[]>(categories);
 
@@ -91,7 +86,6 @@ const Sidebar = ({
       name: '',
     },
     onSubmit: (values) => {
-      console.log('submitted');
       console.log(values);
     },
   });
@@ -148,7 +142,6 @@ const Sidebar = ({
     const updatedFetchFilters = filterKeys.map((key) => {
       return { key, value: formik.values[key as keyof typeof formik.values] };
     });
-    console.log(updatedFetchFilters);
 
     setFetchFilters(updatedFetchFilters);
   };

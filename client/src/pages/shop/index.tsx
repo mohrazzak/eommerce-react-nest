@@ -14,6 +14,7 @@ import { useState } from 'react';
 import Products from './Products';
 import { useGetShopQuery } from '../../features/api/user/shopAPI';
 import { useEffect } from 'react';
+import Loader from '../../Layout/Loader';
 export interface Filter {
   key: string;
   value: string | number[] | number | null;
@@ -28,11 +29,9 @@ const ShopPage = () => {
   const [fetchFilters, setFetchFilters] = useState<Filter[]>([
     { key: 'price', value: [0, 2000] },
   ]);
-  const { data, isSuccess } = useGetShopQuery(fetchFilters);
+  const { data, isLoading } = useGetShopQuery(fetchFilters);
 
-  useEffect(() => {
-    if (isSuccess) console.log('fetched');
-  }, [isSuccess]);
+  if (isLoading) return <Loader />;
 
   const handleCloseDrawer = () => {
     setDrawerOpen(false);
@@ -57,6 +56,7 @@ const ShopPage = () => {
                   handleCloseDrawer={handleCloseDrawer}
                   MAX_PRICE={MAX_PRICE}
                   setFetchFilters={setFetchFilters}
+                  categories={data?.data.categories ?? []}
                 />
               </Box>
             </Grid>

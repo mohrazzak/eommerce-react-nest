@@ -35,6 +35,7 @@ export class UserService {
   async getUserByIdPublic(id: string): Promise<IUserPublic | null> {
     const user = await this.prisma.user.findUnique({
       where: { id },
+      include: { CartItems: { include: { Product: true } } },
     });
     let userWithoutPassword: IUserPublic | null = null;
 

@@ -15,6 +15,8 @@ import { useGetMyInfoQuery } from './features/api/user/userAPI';
 import { useAppDispatch } from './features/store';
 import { authUser } from './features/authSlice';
 import ShopPage from './pages/shop';
+import { useGetCartItemsQuery } from './features/api/cartItemAPI';
+import { useGetWishlistItemsQuery } from './features/api/wishlistAPI';
 
 // ==  VIEWS
 
@@ -29,6 +31,8 @@ const ActivatePage = lazy(() => import('./pages/auth/ActivatePage'));
 const ProtectedRoute = lazy(() => import('./Layout/ProtectedRoute'));
 const NotProtectedRoute = lazy(() => import('./Layout/NotProtectedRoute'));
 
+const ProductPage = lazy(() => import('./pages/shop/ProductPage'));
+
 // LAYOUTS
 const Layout = lazy(() => import('./Layout'));
 const Loader = lazy(() => import('./Layout/Loader'));
@@ -37,7 +41,6 @@ const Loader = lazy(() => import('./Layout/Loader'));
 const Home = lazy(() => import('./pages/HomePage'));
 const Error404 = lazy(() => import('./pages/Errors/Error404'));
 const UserProfile = lazy(() => import('./pages/UserProfile'));
-
 
 // CUSTOM THEME
 const theme = createTheme({
@@ -54,6 +57,13 @@ const theme = createTheme({
 
 const App: React.FC = () => {
   const { isSuccess, data, isLoading } = useGetMyInfoQuery();
+  useGetCartItemsQuery(undefined, {
+    skip: !isSuccess,
+  });
+  useGetWishlistItemsQuery(undefined, {
+    skip: !isSuccess,
+  });
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -122,7 +132,7 @@ const App: React.FC = () => {
               <Route path={'profile'} element={<UserProfile />} />
               <Route path={'shop'}>
                 <Route index element={<ShopPage />} />
-                <Route path={':productId'} element={<Home />} />
+                <Route path={':productId'} element={<ProductPage />} />
               </Route>
               <Route path={'cart'} element={<Home />} />
               <Route path={'wishlist'} element={<Home />} />

@@ -20,15 +20,25 @@ import { useAppDispatch, useAppSelector } from '../../../../features/store';
 import { clearUser } from '../../../../features/authSlice';
 import { BiLogOut, BiUser } from 'react-icons/bi';
 import { CiSettings } from 'react-icons/ci';
+import {
+  cartItemApi,
+  selectCartItemsData,
+} from '../../../../features/api/cartItemAPI';
+import {
+  selectWishlistItemData,
+  wishlistItemApi,
+} from '../../../../features/api/wishlistAPI';
 
 const LinkWithIcon = ({
   linkWithIcon,
   handleClick,
   setCartOpen,
+  setWishlistOpen,
 }: {
   linkWithIcon: ILinkWithIcon;
   handleClick: () => void;
   setCartOpen?: (newState: boolean) => void;
+  setWishlistOpen?: (newState: boolean) => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [anchorElMenu, setAnchorElMenu] = React.useState<null | HTMLElement>(
@@ -40,6 +50,11 @@ const LinkWithIcon = ({
   const navigate = useNavigate();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const menuOpen = Boolean(anchorElMenu);
+
+  const cartItems = useAppSelector((state) => selectCartItemsData(state));
+  const wishlistItems = useAppSelector((state) =>
+    selectWishlistItemData(state)
+  );
   const handleClickMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElMenu(event.currentTarget);
   };
@@ -50,7 +65,11 @@ const LinkWithIcon = ({
   const handleLogOut = () => {
     setAnchorElMenu(null);
     dispatch(clearUser());
-    navigate('/signin');
+    setTimeout(() => {
+      navigate('signin');
+    }, 500);
+    dispatch(cartItemApi.util.resetApiState());
+    dispatch(wishlistItemApi.util.resetApiState());
   };
 
   const theme: Theme = useTheme();
@@ -61,6 +80,12 @@ const LinkWithIcon = ({
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
+
+  const handleCount = (linkWithIcon: ILinkWithIcon) => {
+    if (linkWithIcon.id === 'CART') return cartItems?.length ?? 0;
+    if (linkWithIcon.id === 'HEART') return wishlistItems?.length ?? 0;
+  };
+
   const open = Boolean(anchorEl);
 
   if (linkWithIcon.id === 'USER' && isAuth)
@@ -243,12 +268,17 @@ const LinkWithIcon = ({
           setCartOpen && setCartOpen(true);
           return;
         }
+        if (linkWithIcon.id === 'HEART') {
+          setWishlistOpen && setWishlistOpen(true);
+          console.log('TEST');
+          return;
+        }
         handleClick();
       }}
     >
       {linkWithIcon.hasCount ? (
         <Badge
-          badgeContent={4}
+          badgeContent={handleCount(linkWithIcon)}
           sx={{
             '& .MuiBadge-badge': {
               top: 20,

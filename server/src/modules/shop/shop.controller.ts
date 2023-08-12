@@ -10,9 +10,10 @@ export class ShopController {
   async GetFilteredProducts(@Query() filters: QueryDto) {
     console.log(filters);
     const products = await this.shopService.GetFilteredProducts(filters);
+    const categories = await this.shopService.getAllCategories();
 
     return {
-      data: { products },
+      data: { products, categories },
       message: 'Products fetched successfully',
       status: HttpStatus.ACCEPTED,
     };

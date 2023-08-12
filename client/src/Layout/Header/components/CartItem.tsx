@@ -6,19 +6,43 @@ import DeleteIcon from '../../../assets/icons/DeleteIcon';
 import MinusIcon from '../../../assets/icons/MinusIcon';
 import PlusIcon from '../../../assets/icons/Register copy';
 import { Link } from 'react-router-dom';
-import ICartItem from './interfaces/ICartItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import sliceProdTitle from './utils/sliceTitle';
+import { CartItemProduct } from 'src/interfaces';
+import {
+  useDeleteCartItemMutation,
+  useUpdateCartItemQuantityMutation,
+} from '../../../features/api/cartItemAPI';
 
 const CartItem = ({
   cartItem,
   setCartOpen,
 }: {
   setCartOpen: (newState: boolean) => void;
-  cartItem: ICartItem;
+  cartItem: CartItemProduct;
 }) => {
   const theme: Theme = useTheme();
-  const [itemCount, setItemCount] = useState<number>(cartItem.count);
+  const [itemCount, setItemCount] = useState<number>(cartItem.quantity);
+  const [updateQuantity] = useUpdateCartItemQuantityMutation();
+  const [deleteCartItem] = useDeleteCartItemMutation();
+  useEffect(() => {
+    if (itemCount !== cartItem.quantity)
+      updateQuantity({ quantity: itemCount, id: cartItem.id });
+  }, [cartItem.id, cartItem.quantity, itemCount, updateQuantity]);
+
+  const handleIncrement = () => {
+    setItemCount((state) => state + 1);
+  };
+
+  const handleDecrement = () => {
+    if (itemCount === 1) return;
+    setItemCount((state) => state - 1);
+  };
+
+  const handleDelete = () => {
+    deleteCartItem({ id: cartItem.id });
+  };
+
   return (
     <Box
       sx={{
@@ -51,8 +75,8 @@ const CartItem = ({
             objectFit: 'contain',
           }}
           loading="lazy"
-          alt={cartItem.title}
-          src={cartItem.imageURL}
+          alt={cartItem.Product.name}
+          src={cartItem.Product.imageURL}
         />
       </Box>
       <IconButton
@@ -63,6 +87,7 @@ const CartItem = ({
           right: 10,
           top: 0,
         }}
+        onClick={handleDelete}
       >
         <DeleteIcon />
       </IconButton>
@@ -95,7 +120,7 @@ const CartItem = ({
             onClick={() => setCartOpen(false)}
             to={'/'}
           >
-            {sliceProdTitle(cartItem.title)}
+            {sliceProdTitle(cartItem.Product.name)}
           </Typography>
           <IconButton
             sx={{
@@ -103,6 +128,7 @@ const CartItem = ({
               color: 'tomato',
               p: 0,
             }}
+            onClick={handleDelete}
           >
             <DeleteIcon />
           </IconButton>
@@ -129,7 +155,7 @@ const CartItem = ({
                 borderRight: '1px solid black',
                 borderRadius: '0',
               }}
-              onClick={() => setItemCount((state) => --state)}
+              onClick={handleDecrement}
             >
               <MinusIcon width="16px" height="16px" />
             </IconButton>
@@ -139,7 +165,7 @@ const CartItem = ({
                 borderLeft: '1px solid black',
                 borderRadius: '0',
               }}
-              onClick={() => setItemCount((state) => ++state)}
+              onClick={handleIncrement}
             >
               <PlusIcon width="16px" height="16px" />
             </IconButton>
@@ -147,7 +173,7 @@ const CartItem = ({
           <Box sx={{ ml: 'auto', p: 2, display: 'flex' }}>
             <Typography>{itemCount}</Typography>
             <Typography sx={{ mx: 1 }}>x</Typography>
-            <Typography>{cartItem.price}</Typography>
+            <Typography>{cartItem.Product.price}</Typography>
           </Box>
         </Box>
       </Box>

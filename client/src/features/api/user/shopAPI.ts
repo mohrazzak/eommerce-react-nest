@@ -3,8 +3,10 @@ import { shopPath } from '../../../api/routes';
 import { Filter } from '../../../pages/shop';
 import { ShopProduct } from '../../../interfaces';
 
+import { Category } from '@prisma/client';
+
 interface GetShopResponse {
-  data: { products: ShopProduct[] };
+  data: { products: ShopProduct[]; categories: Category[] };
   message: string;
   statusCode: number;
 }
@@ -38,7 +40,6 @@ function convertFiltersToQueryParams(filters: Filter[]): string {
     })
     .join('&');
 
-  console.log('?' + queryParams);
   return queryParams;
 }
 

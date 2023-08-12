@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { InternalServerErrorException, Logger } from '@nestjs/common';
+import { InternalServerErrorException, Logger, ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import * as compression from 'compression';
 import * as chalk from 'chalk';
@@ -25,6 +25,7 @@ async function bootstrap() {
 
     app.use(morgan('dev'));
     app.useGlobalInterceptors(new TimeoutInterceptor());
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
     // App
     await app.listen(3000);

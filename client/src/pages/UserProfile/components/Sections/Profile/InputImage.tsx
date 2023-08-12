@@ -81,7 +81,6 @@ const InputImage = ({ handleChange, id, name, image, setImage }: Props) => {
           accept=".jpg,.jpeg,.png"
           onChange={(e) => {
             setImage(e.target.files?.[0]);
-            console.log(e.target.files?.[0]);
             handleChange('imageURL', e.target.files?.[0]);
           }}
           sx={{

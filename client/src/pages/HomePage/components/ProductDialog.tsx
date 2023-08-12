@@ -13,6 +13,13 @@ import { BiX } from 'react-icons/bi';
 import { Props as ProductProps } from './HomeProductCard';
 import RenderStars from '../../../utils/RenderStars';
 import { ShopProduct } from '../../../interfaces';
+import {
+  selectCartItemsData,
+  useAddCartItemMutation,
+} from '../../../features/api/cartItemAPI';
+import { useAppSelector } from '../../../features/store';
+import { Badge } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface Props extends ProductProps {
   setDialogOpen: (newState: boolean) => void;
@@ -32,6 +39,15 @@ const Transition = React.forwardRef(function Transition(
 
 const ProductDialog = ({ setDialogOpen, dialogOpen, product }: Props) => {
   const theme = useTheme();
+
+  const [addToCart] = useAddCartItemMutation();
+  const cartItems = useAppSelector((state) => selectCartItemsData(state));
+
+  const cartItem = cartItems?.find((cI) => cI.productId === product.id);
+  const navigate = useNavigate();
+  const handleAddToCart = () => {
+    addToCart({ productId: product.id, quantity: 1 });
+  };
 
   return (
     <Dialog
@@ -187,18 +203,37 @@ const ProductDialog = ({ setDialogOpen, dialogOpen, product }: Props) => {
                 alignItems: 'center',
               }}
             >
-              <Button
-                variant="contained"
+              <Badge
+                badgeContent={cartItem?.quantity}
+                color="secondary"
                 sx={{
-                  bgcolor: alpha('#000', 0.8),
-                  '&:hover': {
-                    bgcolor: alpha('#000', 0.9),
+                  '& .MuiBadge-badge': {
+                    right: -3,
+                    top: 13,
+                    border: `2px solid ${theme.palette.background.paper}`,
+                    padding: '0 4px',
                   },
                 }}
               >
-                Add to cart
+                <Button
+                  variant="contained"
+                  sx={{
+                    bgcolor: alpha('#000', 0.8),
+                    '&:hover': {
+                      bgcolor: alpha('#000', 0.9),
+                    },
+                  }}
+                  onClick={handleAddToCart}
+                >
+                  Add to cart
+                </Button>
+              </Badge>
+              <Button
+                variant="contained"
+                onClick={() => navigate(`${product.id}`)}
+              >
+                View details
               </Button>
-              <Button variant="contained">View details</Button>
             </Box>
           </Grid>
         </Grid>

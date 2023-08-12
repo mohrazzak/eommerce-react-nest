@@ -18,12 +18,14 @@ import { saveUser } from '../../../features/authSlice';
 import useToastify from '../../../hooks/useToastify';
 import { useFormik } from 'formik';
 import { FormControlLabel, FormGroup } from '@mui/material';
+import { useGetWishlistItemsQuery } from '../../../features/api/wishlistAPI';
+import { useGetCartItemsQuery } from '../../../features/api/cartItemAPI';
+import { useState } from 'react';
 
 const SignInPage = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const [signIn, { isError, isSuccess, error, data }] = useSignInMutation();
-  const navigate = useNavigate();
 
   const { fireLoading } = useToastify({
     isError,
@@ -36,9 +38,9 @@ const SignInPage = () => {
           saveUser({
             accessToken: data.data.accessToken,
             name: data?.data.user.name,
+            imageURL: data.data.user.imageURL,
           })
         );
-      navigate('/signin');
     },
   });
 

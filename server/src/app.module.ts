@@ -13,6 +13,8 @@ import { ProductModule } from './modules/shop/product/product.module';
 import { ShopModule } from './modules/shop/shop.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CacheModule } from '@nestjs/cache-manager';
+import { CartModule } from './modules/cart/cart.module';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -34,6 +36,8 @@ import { CacheModule } from '@nestjs/cache-manager';
     AddressModule,
     ProductModule,
     ShopModule,
+    CartModule,
+    WishlistModule,
   ],
   controllers: [],
   providers: [

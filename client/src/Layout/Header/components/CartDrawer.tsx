@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 
 import CloseIcon from '../../../assets/icons/CloseIcon';
 import CartItems from './CartItems';
+import { useAppSelector } from '../../../features/store';
+import { selectCartItemsData } from '../../../features/api/cartItemAPI';
 
 const CartDrawer = ({
   cartOpen,
@@ -16,6 +18,13 @@ const CartDrawer = ({
   setCartOpen: (newState: boolean) => void;
 }) => {
   const theme: Theme = useTheme();
+
+  const cartItems = useAppSelector((state) => selectCartItemsData(state));
+
+  const totalPrice = cartItems?.reduce((total, currentItem) => {
+    const productPrice = currentItem.Product.price * currentItem.quantity;
+    return total + productPrice;
+  }, 0);
 
   return (
     <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
@@ -85,7 +94,7 @@ const CartDrawer = ({
               }}
             >
               <Typography>Total: </Typography>
-              <Typography>$1999.24</Typography>
+              <Typography>{totalPrice}</Typography>
             </Box>
             <Box
               sx={{
@@ -96,11 +105,8 @@ const CartDrawer = ({
                 alignItems: 'center',
               }}
             >
-              <Button variant="contained" color={'primary'} sx={{ mr: 2 }}>
+              <Button variant="contained" color={'primary'} fullWidth>
                 Check out
-              </Button>
-              <Button variant="contained" color={'secondary'}>
-                View cart
               </Button>
             </Box>
           </Box>

@@ -13,7 +13,7 @@ export class ProductService {
     // Check for name
     if (filters.name) whereClause.name = { contains: filters.name };
     if (filters.categoryId) whereClause.categoryId = filters.categoryId;
-    if (filters.rating) whereClause.categoryId = filters.rating;
+    if (filters.rating) whereClause.averageRating = filters.rating;
 
     // Check for price range availability
     if (filters.priceRange) whereClause.price = { gte: filters.priceRange.min, lte: filters.priceRange.max };

@@ -53,8 +53,6 @@ const ProfileDialog = ({ openDialog, setOpenDialog, userInfo }: Props) => {
     setOpenDialog(false);
     formik.resetForm();
   }
-  console.log(formik.values);
-  console.log(formik.errors);
   return (
     <Dialog
       open={openDialog}

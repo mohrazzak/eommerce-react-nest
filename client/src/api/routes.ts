@@ -6,7 +6,11 @@ export const addressesPath = `${baseURL}/users/addresses`;
 
 export const authPath = `${baseURL}/auth`;
 
+export const cartItemsPath = `${baseURL}/cart`;
+
 export const shopPath = `${baseURL}/shop`;
+
+export const wishlistItemPath = `${baseURL}/wishlist`;
 
 // export const usersRoutes = {
 //   getMyInfo: { url: '/me', method: 'GET' },

@@ -14,5 +14,5 @@ export class ProductController {
       message: 'Product fetched successfully',
       statusCode: HttpStatus.OK,
     };
-  } 
+  }
 }

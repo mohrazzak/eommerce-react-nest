@@ -15,11 +15,11 @@ import { ITokenPayload } from './interfaces';
 export class AuthService {
   private NODE_ENV = this.configService.environment;
 
-  // private confirmationEmailHTML = readHtml('dist/modules/user/auth/html/confirmEmail.html');
-  // private resetPasswordHTML = readHtml('dist/modules/user/auth/html/resetPassword.html');
+  private confirmationEmailHTML = readHtml('dist/modules/user/auth/html/confirmEmail.html');
+  private resetPasswordHTML = readHtml('dist/modules/user/auth/html/resetPassword.html');
 
-  private confirmationEmailHTML = '';
-  private resetPasswordHTML = '';
+  // private confirmationEmailHTML = '';
+  // private resetPasswordHTML = '';
   private LINK_TO_REPLACE = 'confirmationLink';
 
   private CLIENT_LOCAL_URL = this.configService.client.localUrl;

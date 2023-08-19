@@ -28,7 +28,7 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
     // App
-    await app.listen(3000);
+    await app.listen(process.env.PORT, '0.0.0.0');
     if (process.env.NODE_ENV === 'production')
       Logger.log(`🚀  Server ready at ${chalk.hex('#87e8de').bold(process.env.SERVER_PRODUCTION_URL)}`, 'Bootstrap');
     else logger.log(`🚀  Server is listening on ${chalk.hex('#87e8de').bold(process.env.SERVER_LOCAL_URL)}`);

@@ -9,9 +9,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./src", // Change this to the "src" directory
-    "paths": {
-      "*": ["*"]
-    },
     "incremental": true
   },
   "exclude": ["node_modules", "dist"]

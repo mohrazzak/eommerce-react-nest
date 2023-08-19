@@ -13,14 +13,16 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { IUserResponse } from './interfaces';
+import { IUserPublic, IUserResponse } from './interfaces';
 import { AuthGuard, IAuthRequest } from 'src/shared';
 import { UpdateUserDTO, UpdateUserPasswordDTO, DeleteUserDTO } from './dto';
 import { AuthService } from './auth/auth.service';
 import { UploadService } from '../upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileValidationPipe } from 'src/shared/pipes/FileValidationPipe';
+import { ApiAcceptedResponse, ApiBearerAuth, ApiOperation, ApiResponse, ApiResponseProperty, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(
@@ -31,6 +33,9 @@ export class UserController {
 
   @Get('/me')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current user information' }) // Provide a summary for the operation
+  @ApiResponse({ status: HttpStatus.OK, description: 'User fetched successfully', type: IUserResponse }) // Describe the response type
   async getMe(@Req() req: IAuthRequest): Promise<IUserResponse> {
     const user = await this.userService.getUserByIdPublic(req.user.id);
     if (!user) throw new NotFoundException('User not found');

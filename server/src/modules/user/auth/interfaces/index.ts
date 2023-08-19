@@ -1,2 +1,2 @@
 export * from './response';
-export * from './IConfirmToken';
+export * from './ITokenPayload';

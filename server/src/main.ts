@@ -4,10 +4,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { InternalServerErrorException, Logger, ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import * as compression from 'compression';
+// import * as compression from 'compression';
 import * as chalk from 'chalk';
 import { TimeoutInterceptor } from './interception/timeout.interception';
-import * as morgan from 'morgan';
+// import * as morgan from 'morgan';
 
 async function bootstrap() {
   try {
@@ -16,14 +16,14 @@ async function bootstrap() {
 
     // Middleware
     app.use(helmet());
-    app.use(compression());
+    // app.use(compression());
 
     // Swagger
     const config = new DocumentBuilder().setTitle('Saybers').setDescription('Saybers Ecommerce API').setVersion('0.1').build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 
-    app.use(morgan('dev'));
+    // app.use(morgan('dev'));
     app.useGlobalInterceptors(new TimeoutInterceptor());
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 

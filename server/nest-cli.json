@@ -6,7 +6,7 @@
     "deleteOutDir": true,
     "assets": ["**/*.html"],
     "plugins": [  {
-    "name": "@nestjs/swagger/dist/plugin",
+    "name": "@nestjs/swagger",
     "options": {
       "classValidatorShim": true,
       "introspectComments": true

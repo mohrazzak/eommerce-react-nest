@@ -1,0 +1,33 @@
+import { User } from '@prisma/client';
+import { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '../../../modules/prisma/prisma.service';
+import { UserService } from '../user.service';
+import { appConfig } from '../../../config';
+import { SignUpDTO } from './dto';
+import { ITokenPayload } from './interfaces';
+export declare class AuthService {
+    private readonly prisma;
+    private readonly userService;
+    private readonly configService;
+    private jwtService;
+    private NODE_ENV;
+    private confirmationEmailHTML;
+    private resetPasswordHTML;
+    private LINK_TO_REPLACE;
+    private CLIENT_LOCAL_URL;
+    private CLIENT_PRODUCTION_URL;
+    private SELECTED_CLIENT_URL;
+    private tokenDuration;
+    constructor(prisma: PrismaService, userService: UserService, configService: ConfigType<typeof appConfig>, jwtService: JwtService);
+    sendActivateEmail(receiverEmail: string, confirmationEmailToken: string): Promise<void>;
+    sendResetPasswordEmail(receiverEmail: string, resetPasswordEmailToken: string): Promise<void>;
+    genToken(payload: ITokenPayload): Promise<string>;
+    verifyToken(token: string): Promise<ITokenPayload>;
+    activate(email: string): Promise<User>;
+    passwordValid(hashedPassword: string, password: string): Promise<boolean>;
+    hashPassword(password: string): Promise<string>;
+    signUp(signUpDTO: SignUpDTO): Promise<User>;
+    changePassword(email: string, newPassword: string): Promise<User>;
+    updateResetCode(updatedCode: string | null, email: string): Promise<User>;
+}

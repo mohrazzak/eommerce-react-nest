@@ -17,7 +17,7 @@ export class WishlistController {
       statusCode: 200,
     };
   }
-
+  //
   @Put()
   @UseGuards(AuthGuard)
   async toggleWishlistItem(@Req() req: IAuthRequest, @Body() cartItemDTO: WishlistItemDTO) {

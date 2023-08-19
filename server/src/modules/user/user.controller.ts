@@ -14,12 +14,12 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { IUserPublic, IUserResponse } from './interfaces';
-import { AuthGuard, IAuthRequest } from 'src/shared';
+import { AuthGuard, IAuthRequest } from '../../shared';
 import { UpdateUserDTO, UpdateUserPasswordDTO, DeleteUserDTO } from './dto';
 import { AuthService } from './auth/auth.service';
 import { UploadService } from '../upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileValidationPipe } from 'src/shared/pipes/FileValidationPipe';
+import { FileValidationPipe } from '../../shared/pipes/FileValidationPipe';
 import { ApiAcceptedResponse, ApiBearerAuth, ApiOperation, ApiResponse, ApiResponseProperty, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users')

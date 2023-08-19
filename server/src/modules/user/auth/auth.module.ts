@@ -2,7 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthGuard } from 'src/shared/guards';
+import { AuthGuard } from '../../../shared/guards';
 import { UserModule } from '../user.module';
 
 @Module({

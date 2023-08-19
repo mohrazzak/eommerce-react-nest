@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { AuthGuard, IAuthRequest } from 'src/shared';
+import { AuthGuard, IAuthRequest } from '../../shared';
 import { CartItemDTO, CartItemUpdateQuantity } from './dto';
 
 @Controller('cart')

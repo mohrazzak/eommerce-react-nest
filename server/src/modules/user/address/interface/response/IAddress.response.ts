@@ -1,5 +1,5 @@
 import { Address } from '@prisma/client';
-import { IResponse } from 'src/shared';
+import { IResponse } from '../../../../../shared';
 
 export interface IAddressResponse extends IResponse {
   data: { address: Address };

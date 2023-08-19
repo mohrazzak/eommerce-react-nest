@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus, Param, ParseIntPipe } from '@nestjs/common';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from '../../../modules/prisma/prisma.service';
 
 @Controller('product')
 export class ProductController {

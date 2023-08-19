@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { WishlistService } from './wishlist.service';
-import { AuthGuard, IAuthRequest } from 'src/shared';
+import { AuthGuard, IAuthRequest } from '../../shared';
 import { WishlistItemDTO } from './dto';
 
 @Controller('wishlist')

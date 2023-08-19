@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { AddressService } from './address.service';
-import { AuthGuard, IAuthRequest } from 'src/shared';
+import { AuthGuard, IAuthRequest } from '../../../shared';
 import { IAddressResponse, IGetAllAddressesResponse } from './interface';
 import { AddressDTO } from './dto';
 

@@ -2,10 +2,10 @@ import { BadRequestException, Body, Controller, HttpCode, HttpStatus, NotFoundEx
 import { ISignInResponse, IAuthResponse } from './interfaces';
 import { ActivateDTO, ResetPasswordConfirmationDTO, ResetPasswordDTO, SignInDTO, SignUpDTO } from './dto';
 import { AuthService } from './auth.service';
-import { UserService } from 'src/modules/user/user.service';
-import { exclude } from 'src/shared';
+import { UserService } from '../../../modules/user/user.service';
+import { exclude } from '../../../shared';
 import { User } from '@prisma/client';
-import { IUserPublic } from 'src/modules/user/interfaces';
+import { IUserPublic } from '../../../modules/user/interfaces';
 
 @Controller('auth')
 export class AuthController {

@@ -1,12 +1,12 @@
 import { BadRequestException, Inject, Injectable, Logger, NotFoundException, forwardRef } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from '../../modules/prisma/prisma.service';
 import { IUserPublic } from './interfaces';
 import { SignUpDTO } from './auth/dto';
 import * as nodemailer from 'nodemailer';
 import { ConfigType } from '@nestjs/config';
-import { appConfig } from 'src/config';
-import { exclude } from 'src/shared';
+import { appConfig } from '../../config';
+import { exclude } from '../../shared';
 import { AuthService } from './auth/auth.service';
 import { UpdateUserDTO, DeleteUserDTO, UpdateUserPasswordDTO } from './dto';
 import { UploadService } from '../upload/upload.service';

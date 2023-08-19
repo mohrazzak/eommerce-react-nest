@@ -1,5 +1,5 @@
-import { IUserPublic } from 'src/modules/user/interfaces';
-import { IResponse } from 'src/shared/interfaces';
+import { IUserPublic } from '../../../../../modules/user/interfaces';
+import { IResponse } from '../../../../../shared/interfaces';
 
 export interface ISignInResponse extends IResponse {
   data: {

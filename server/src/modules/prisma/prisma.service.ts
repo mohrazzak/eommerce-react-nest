@@ -1,7 +1,7 @@
 import { INestApplication, Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
-import { appConfig } from 'src/config';
+import { appConfig } from '../../config';
 
 @Injectable()
 export class PrismaService extends PrismaClient {

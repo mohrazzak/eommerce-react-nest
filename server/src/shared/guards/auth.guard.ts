@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, Injec
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { appConfig } from 'src/config';
+import { appConfig } from '../../config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

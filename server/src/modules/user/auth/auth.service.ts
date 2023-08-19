@@ -4,10 +4,10 @@ import { User } from '@prisma/client';
 import { Inject, Injectable, InternalServerErrorException, forwardRef } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { PrismaService } from '../../../modules/prisma/prisma.service';
 import { UserService } from '../user.service';
-import { appConfig } from 'src/config';
-import { handleException, readHtml } from 'src/shared';
+import { appConfig } from '../../../config';
+import { handleException, readHtml } from '../../../shared';
 import { SignUpDTO } from './dto';
 import { ITokenPayload } from './interfaces';
 

@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { v4 as genUniqueId } from 'uuid';
 import * as fs from 'fs';
 import { format } from 'date-fns';
-import { IAuthRequest } from 'src/shared';
+import { IAuthRequest } from '../shared';
 
 interface ErrorResponse {
   statusCode: number;

@@ -13,6 +13,7 @@ export class AddressController {
 
   @Get()
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User deleted successfully', type: AllAddressesResponse })
   async getAllAddresses(@Req() req: IAuthRequest): Promise<AllAddressesResponse> {
     const addresses = await this.addressService.getAllUserAddresses(req.user.id);
@@ -25,6 +26,7 @@ export class AddressController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ description: 'User deleted successfully', type: AddressResponse })
   async addAddress(@Req() req: IAuthRequest, @Body() dto: AddressDTO): Promise<AddressResponse> {
     const address = await this.addressService.addAddress(dto, req.user.id);
@@ -37,6 +39,7 @@ export class AddressController {
 
   @Put(':addressId')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async updateAddress(@Req() req: IAuthRequest, @Body() dto: AddressDTO, @Param('addressId') addressId: number): Promise<AddressResponse> {
     const address = await this.addressService.updateAddress(dto, +addressId, req.user.id);
     return {
@@ -48,6 +51,7 @@ export class AddressController {
 
   @Delete(':addressId')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async deleteAddress(@Req() req: IAuthRequest, @Param('addressId') addressId: number): Promise<AddressResponse> {
     const address = await this.addressService.deleteAddress(+addressId, req.user.id);
     return {
@@ -59,6 +63,7 @@ export class AddressController {
 
   @Patch(':addressId')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async setDefaultAddress(@Req() req: IAuthRequest, @Param('addressId') addressId: number): Promise<AddressResponse> {
     const address = await this.addressService.setDefaultAddress(req.user.id, +addressId);
     return {

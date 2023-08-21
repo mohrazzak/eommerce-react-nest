@@ -11,7 +11,6 @@ import { handleException, readHtml } from '../../../shared';
 import { SignUpDTO } from './dto';
 import { ITokenPayload } from './interfaces';
 
-@Injectable()
 export class AuthService {
   private NODE_ENV = this.configService.environment;
 

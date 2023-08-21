@@ -19,7 +19,12 @@ async function bootstrap() {
     // app.use(compression());
 
     // Swagger
-    const config = new DocumentBuilder().setTitle('Saybers').setDescription('Saybers Ecommerce API').setVersion('0.1').build();
+    const config = new DocumentBuilder()
+      .setTitle('Saybers')
+      .setDescription('Saybers Ecommerce API')
+      .setVersion('0.1')
+      .addBearerAuth()
+      .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 

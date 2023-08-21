@@ -1,25 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { OmitType } from '@nestjs/swagger';
+import { UserEntity } from './User.entity';
 
-export class IUserPublic implements Omit<User, 'password'> {
-  @ApiProperty()
-  updatedAt: Date;
-  @ApiProperty()
-  createdAt: Date;
-  @ApiProperty()
-  email: string;
-  @ApiProperty()
-  id: string;
-  @ApiProperty()
-  name: string;
-  @ApiProperty()
-  imageURL: string;
-  @ApiProperty()
-  resetCode: string;
-  @ApiProperty()
-  isActive: boolean;
-  @ApiProperty()
-  isAdmin: boolean;
-  @ApiProperty()
-  phoneNumber: string;
-}
+export class PublicUserEntity extends OmitType(UserEntity, ['password'] as const) {}

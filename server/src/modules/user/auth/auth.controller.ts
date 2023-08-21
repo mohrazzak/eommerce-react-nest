@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { UserService } from '../../../modules/user/user.service';
 import { exclude } from '../../../shared';
 import { User } from '@prisma/client';
-import { IUserPublic } from '../../../modules/user/interfaces';
+import { PublicUserEntity } from '../../../modules/user/interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +26,7 @@ export class AuthController {
 
     await this.authService.sendActivateEmail(user.email, activationToken);
 
-    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as PublicUserEntity;
 
     return {
       data: { user: userWithoutPassword },
@@ -46,7 +46,7 @@ export class AuthController {
 
     await this.authService.activate(email);
 
-    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as PublicUserEntity;
 
     return {
       message: 'User activated, You can now login',
@@ -73,7 +73,7 @@ export class AuthController {
       isActive: user.isActive,
     });
 
-    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as PublicUserEntity;
 
     return {
       data: {
@@ -102,7 +102,7 @@ export class AuthController {
 
     await this.authService.updateResetCode(resetToken, user.email);
 
-    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as PublicUserEntity;
 
     return {
       message: 'Confirmation email sent to your mail',
@@ -126,7 +126,7 @@ export class AuthController {
 
     await this.authService.updateResetCode(null, user.email);
 
-    const userWithoutPassword = (await exclude<User, keyof User>(user, ['password'])) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(user, ['password']) as PublicUserEntity;
 
     return {
       message: 'Password changed',

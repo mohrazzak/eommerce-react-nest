@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable, Logger, NotFoundException, forwardRef } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../../modules/prisma/prisma.service';
-import { IUserPublic } from './interfaces';
+import { PublicUserEntity } from './interfaces';
 import { SignUpDTO } from './auth/dto';
 import * as nodemailer from 'nodemailer';
 import { ConfigType } from '@nestjs/config';
@@ -32,14 +32,14 @@ export class UserService {
   private EM_SENDER_NAME = this.configService.mail.senderName;
   private EM_SENDER_EMAIL = this.configService.mail.senderEmail;
 
-  async getUserByIdPublic(id: string): Promise<IUserPublic | null> {
+  async getUserByIdPublic(id: string): Promise<PublicUserEntity | null> {
     const user = await this.prisma.user.findUnique({
       where: { id },
       include: { CartItems: { include: { Product: true } } },
     });
-    let userWithoutPassword: IUserPublic | null = null;
+    let userWithoutPassword: PublicUserEntity | null = null;
 
-    if (user) userWithoutPassword = exclude<User, keyof User>(user, ['password']) as IUserPublic;
+    if (user) userWithoutPassword = exclude<User, keyof User>(user, ['password']) as PublicUserEntity;
 
     return userWithoutPassword;
   }
@@ -85,7 +85,7 @@ export class UserService {
     }
   }
 
-  async deleteUserById(dto: DeleteUserDTO, userId: string): Promise<IUserPublic> {
+  async deleteUserById(dto: DeleteUserDTO, userId: string): Promise<PublicUserEntity> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
@@ -94,11 +94,11 @@ export class UserService {
 
     const deletedUser = await this.prisma.user.delete({ where: { id: userId } });
 
-    const userWithoutPassword = exclude<User, keyof User>(deletedUser, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(deletedUser, ['password']) as PublicUserEntity;
     return userWithoutPassword;
   }
 
-  async updateUser(dto: UpdateUserDTO, userId: string, image: Express.Multer.File): Promise<IUserPublic> {
+  async updateUser(dto: UpdateUserDTO, userId: string, image: Express.Multer.File): Promise<PublicUserEntity> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
@@ -127,11 +127,11 @@ export class UserService {
       });
     }
 
-    const userWithoutPassword = exclude<User, keyof User>(updatedUser, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(updatedUser, ['password']) as PublicUserEntity;
     return userWithoutPassword;
   }
 
-  async updatePassword(dto: UpdateUserPasswordDTO, userId: string): Promise<IUserPublic> {
+  async updatePassword(dto: UpdateUserPasswordDTO, userId: string): Promise<PublicUserEntity> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
@@ -141,7 +141,7 @@ export class UserService {
     const hashedPassword = await this.authService.hashPassword(dto.newPassword);
     const updatedUser = await this.prisma.user.update({ where: { id: userId }, data: { password: hashedPassword } });
 
-    const userWithoutPassword = exclude<User, keyof User>(updatedUser, ['password']) as IUserPublic;
+    const userWithoutPassword = exclude<User, keyof User>(updatedUser, ['password']) as PublicUserEntity;
     return userWithoutPassword;
   }
 

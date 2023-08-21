@@ -1,2 +1,2 @@
-export * from './IResponse';
+export * from './AppResponse.response';
 export * from './IAuthRequest';

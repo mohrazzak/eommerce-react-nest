@@ -1,9 +1,9 @@
-import { IUserPublic } from '../../../../../modules/user/interfaces';
-import { IResponse } from '../../../../../shared/interfaces';
+import { PublicUserEntity } from '../../../../../modules/user/interfaces';
+import { AppResponse } from '../../../../../shared/interfaces';
 
-export interface ISignInResponse extends IResponse {
+export interface ISignInResponse extends AppResponse {
   data: {
-    user: IUserPublic;
+    user: PublicUserEntity;
     accessToken: string;
   };
 }

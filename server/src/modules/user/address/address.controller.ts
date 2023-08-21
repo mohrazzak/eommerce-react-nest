@@ -1,16 +1,19 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { AuthGuard, IAuthRequest } from '../../../shared';
-import { IAddressResponse, IGetAllAddressesResponse } from './interface';
+import { AddressResponse, AllAddressesResponse } from './interface';
 import { AddressDTO } from './dto';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users/addresses')
+@ApiTags('addresses')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
   @Get()
   @UseGuards(AuthGuard)
-  async getAllAddresses(@Req() req: IAuthRequest): Promise<IGetAllAddressesResponse> {
+  @ApiOkResponse({ description: 'User deleted successfully', type: AllAddressesResponse })
+  async getAllAddresses(@Req() req: IAuthRequest): Promise<AllAddressesResponse> {
     const addresses = await this.addressService.getAllUserAddresses(req.user.id);
     return {
       message: 'Addresses fetched successfully',
@@ -21,7 +24,8 @@ export class AddressController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async addAddress(@Req() req: IAuthRequest, @Body() dto: AddressDTO): Promise<IAddressResponse> {
+  @ApiCreatedResponse({ description: 'User deleted successfully', type: AddressResponse })
+  async addAddress(@Req() req: IAuthRequest, @Body() dto: AddressDTO): Promise<AddressResponse> {
     const address = await this.addressService.addAddress(dto, req.user.id);
     return {
       message: 'Address added successfully',
@@ -32,7 +36,7 @@ export class AddressController {
 
   @Put(':addressId')
   @UseGuards(AuthGuard)
-  async updateAddress(@Req() req: IAuthRequest, @Body() dto: AddressDTO, @Param('addressId') addressId: number): Promise<IAddressResponse> {
+  async updateAddress(@Req() req: IAuthRequest, @Body() dto: AddressDTO, @Param('addressId') addressId: number): Promise<AddressResponse> {
     const address = await this.addressService.updateAddress(dto, +addressId, req.user.id);
     return {
       message: 'Address updated successfully',
@@ -43,7 +47,7 @@ export class AddressController {
 
   @Delete(':addressId')
   @UseGuards(AuthGuard)
-  async deleteAddress(@Req() req: IAuthRequest, @Param('addressId') addressId: number): Promise<IAddressResponse> {
+  async deleteAddress(@Req() req: IAuthRequest, @Param('addressId') addressId: number): Promise<AddressResponse> {
     const address = await this.addressService.deleteAddress(+addressId, req.user.id);
     return {
       message: 'Address deleted successfully',
@@ -54,7 +58,7 @@ export class AddressController {
 
   @Patch(':addressId')
   @UseGuards(AuthGuard)
-  async setDefaultAddress(@Req() req: IAuthRequest, @Param('addressId') addressId: number): Promise<IAddressResponse> {
+  async setDefaultAddress(@Req() req: IAuthRequest, @Param('addressId') addressId: number): Promise<AddressResponse> {
     const address = await this.addressService.setDefaultAddress(req.user.id, +addressId);
     return {
       message: 'Address is now default',
